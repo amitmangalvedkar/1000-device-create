@@ -1,206 +1,510 @@
 [
-		{
-			"id" : "3e77d543.c1882a",
-			"type" : "ibmiot in",
-			"z" : "c3806c66.3c7f9",
-			"authentication" : "quickstart",
-			"apiKey" : "",
-			"inputType" : "evt",
-			"deviceId" : "",
-			"applicationId" : "",
-			"deviceType" : "+",
-			"eventType" : "+",
-			"commandType" : "",
-			"format" : "json",
-			"name" : "IBM IoT App In",
-			"service" : "quickstart",
-			"allDevices" : false,
-			"allApplications" : false,
-			"allDeviceTypes" : true,
-			"allEvents" : true,
-			"allCommands" : false,
-			"allFormats" : false,
-			"x" : 100,
-			"y" : 400,
-			"wires" : [ [ "ae0082ac.51ff8", "c0c482df.3f3b8" ] ]
-		},
-		{
-			"id" : "ae0082ac.51ff8",
-			"type" : "function",
-			"z" : "c3806c66.3c7f9",
-			"name" : "temp",
-			"func" : "return {payload:msg.payload.d.temp};",
-			"outputs" : 1,
-			"x" : 290,
-			"y" : 400,
-			"wires" : [ [ "ff6ad0d9.00953" ] ]
-		},
-		{
-			"id" : "ff6ad0d9.00953",
-			"type" : "switch",
-			"z" : "c3806c66.3c7f9",
-			"name" : "temp thresh",
-			"property" : "payload",
-			"rules" : [ {
-				"t" : "lte",
-				"v" : 40,
-				"v2" : null
-			}, {
-				"t" : "gt",
-				"v" : 40,
-				"v2" : null
-			} ],
-			"checkall" : "true",
-			"outputs" : 2,
-			"x" : 450,
-			"y" : 400,
-			"wires" : [ [ "80621eff.7f9de" ], [ "8e1706a.f71e8f8" ] ]
-		},
-		{
-			"id" : "5dad02b7.a252fc",
-			"type" : "debug",
-			"z" : "c3806c66.3c7f9",
-			"name" : "cpu status",
-			"active" : true,
-			"complete" : "false",
-			"x" : 790,
-			"y" : 400,
-			"wires" : []
-		},
-		{
-			"id" : "c0c482df.3f3b8",
-			"type" : "debug",
-			"z" : "c3806c66.3c7f9",
-			"name" : "device data",
-			"active" : true,
-			"console" : "false",
-			"complete" : "true",
-			"x" : 310,
-			"y" : 480,
-			"wires" : []
-		},
-		{
-			"id" : "80621eff.7f9de",
-			"type" : "template",
-			"z" : "c3806c66.3c7f9",
-			"name" : "safe",
-			"template" : "Temperature ({{payload}}) within safe limits",
-			"x" : 610,
-			"y" : 380,
-			"wires" : [ [ "5dad02b7.a252fc" ] ]
-		},
-		{
-			"id" : "8e1706a.f71e8f8",
-			"type" : "template",
-			"z" : "c3806c66.3c7f9",
-			"name" : "danger",
-			"template" : "Temperature ({{payload}}) critical",
-			"x" : 620,
-			"y" : 420,
-			"wires" : [ [ "5dad02b7.a252fc" ] ]
-		},
-		{
-			"id" : "cbe1a0b7.cd877",
-			"type" : "ibmiot out",
-			"z" : "c3806c66.3c7f9",
-			"authentication" : "boundService",
-			"apiKey" : "",
-			"outputType" : "evt",
-			"deviceId" : "LivingRoomThermo1",
-			"deviceType" : "thermostat",
-			"eventCommandType" : "update",
-			"format" : "json",
-			"data" : "temp:10",
-			"name" : "Send to IBM IoT Platform",
-			"service" : "registered",
-			"x" : 570,
-			"y" : 120,
-			"wires" : []
-		},
-		{
-			"id" : "5917a925.6a3c08",
-			"type" : "inject",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Send Data",
-			"topic" : "",
-			"payload" : "true",
-			"payloadType" : "bool",
-			"repeat" : "",
-			"crontab" : "",
-			"once" : false,
-			"x" : 100,
-			"y" : 120,
-			"wires" : [ [ "6b4a591c.014b18" ] ]
-		},
-		{
-			"id" : "6b4a591c.014b18",
-			"type" : "function",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Device payload",
-			"func" : "// Thermostat's location:\nvar longitude1 = -98.49;\nvar latitude1 = 29.42;\n\n// Array of pseudo random temperatures\nvar temp1 = [15,17,18.5,20,21.5,23,24,22.2,19,18];\n\n// Array of pseudo random relative humidities\nvar humidity1 = [50,55,61,68,65,60,53,49,45,47];\n\n// Counter to select from array.\nvar counter1 = context.get('counter1')||0;\ncounter1 = counter1+1;\nif(counter1 > 9) counter1 = 0;\ncontext.set('counter1',counter1);\n\n// Create MQTT message in JSON\nmsg = {\n  payload: JSON.stringify(\n    {\n      d:{\n        \"temp\" : temp1[counter1],\n        \"humidity\" : humidity1[counter1],\n        \"location\" :\n        {\n          \"longitude\" : longitude1,\n          \"latitude\" : latitude1\n        },\n      }\n    }\n  )\n};\nreturn msg;\n",
-			"outputs" : 1,
-			"noerr" : 0,
-			"x" : 320,
-			"y" : 120,
-			"wires" : [ [ "cbe1a0b7.cd877", "805c97ee.3ed9e8" ] ]
-		},
-		{
-			"id" : "805c97ee.3ed9e8",
-			"type" : "debug",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Debug output payload",
-			"active" : false,
-			"console" : "false",
-			"complete" : "payload",
-			"x" : 560,
-			"y" : 180,
-			"wires" : []
-		},
-		{
-			"id" : "86df0b6c.af90c8",
-			"type" : "comment",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Device Simulator",
-			"info" : "Sends simulated device sensor data to IBM Watson IoT Plaform.\n\nCan be configured to send on click or on an automatic interval.\n\n\n#Prerequisite\nOutput node device type and device ID need to match a device that it registered in a running IBM Watson IoT Platform service.\n\n# Watson IoT Platform docs\n[Connecting devices](https://www.bluemix.net/docs/services/IoT/iotplatform_task.html)",
-			"x" : 100,
-			"y" : 40,
-			"wires" : []
-		},
-		{
-			"id" : "141b7c7.ad42a84",
-			"type" : "comment",
-			"z" : "c3806c66.3c7f9",
-			"name" : "1. Configure target",
-			"info" : "",
-			"x" : 550,
-			"y" : 80,
-			"wires" : []
-		},
-		{
-			"id" : "c2dd8ed5.7dd7f",
-			"type" : "comment",
-			"z" : "c3806c66.3c7f9",
-			"name" : "2. Click to send data",
-			"info" : "To automatically send data:\n1. Change *Repeat* to interval.\n2. Click Deploy button.\n",
-			"x" : 110,
-			"y" : 160,
-			"wires" : []
-		}, {
-			"id" : "7926c7b2.86d938",
-			"type" : "comment",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Temperature Monitor",
-			"info" : "",
-			"x" : 110,
-			"y" : 300,
-			"wires" : []
-		}, {
-			"id" : "188a5e87.e775a1",
-			"type" : "comment",
-			"z" : "c3806c66.3c7f9",
-			"name" : "Configure source",
-			"info" : "",
-			"x" : 100,
-			"y" : 360,
-			"wires" : []
-		} ]
+    {
+        "id": "5d6be325.275c84",
+        "type": "tab",
+        "label": "Device Type and Instance"
+    },
+    {
+        "id": "919793a5.33c3b",
+        "type": "tab",
+        "label": "Simulate multiple devices"
+    },
+    {
+        "id": "ec2ffc67.2ced98",
+        "type": "inject",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 145.5,
+        "y": 84.25,
+        "wires": [
+            [
+                "64d9436a.bd828c"
+            ]
+        ]
+    },
+    {
+        "id": "64d9436a.bd828c",
+        "type": "device-type-manager",
+        "z": "5d6be325.275c84",
+        "auth": "bluemix",
+        "name": "",
+        "apiKey": "",
+        "deviceType": "",
+        "classId": "Device",
+        "method": "Create",
+        "deviceTypeId": "devices",
+        "serialNumber": "",
+        "manufacturer": "",
+        "model": "",
+        "deviceClass": "",
+        "infoDescription": "",
+        "firmwareVersion": "",
+        "hardwareVersion": "",
+        "descriptiveLocation": "",
+        "metadata": "",
+        "password": "",
+        "properties": [],
+        "ignore": false,
+        "x": 306.5,
+        "y": 85.5,
+        "wires": [
+            [
+                "bee38e2.e178e7"
+            ]
+        ]
+    },
+    {
+        "id": "bee38e2.e178e7",
+        "type": "debug",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 506.5,
+        "y": 86.5,
+        "wires": []
+    },
+    {
+        "id": "78572382.87a24c",
+        "type": "inject",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 116.5,
+        "y": 150.25,
+        "wires": [
+            [
+                "a42b24d0.316f18"
+            ]
+        ]
+    },
+    {
+        "id": "ad82370f.32998",
+        "type": "repeat",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "repetitions": "50",
+        "elseOutput": false,
+        "outputs": 1,
+        "x": 301.5,
+        "y": 232.75,
+        "wires": [
+            [
+                "a42b24d0.316f18",
+                "4d1aa7bd.d12af"
+            ]
+        ]
+    },
+    {
+        "id": "a42b24d0.316f18",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 294.5,
+        "y": 151.75,
+        "wires": [
+            [
+                "ad82370f.32998"
+            ]
+        ]
+    },
+    {
+        "id": "3ea8d9e8.0694ae",
+        "type": "device-manager",
+        "z": "5d6be325.275c84",
+        "auth": "bluemix",
+        "name": "",
+        "apiKey": "",
+        "deviceType": "devices",
+        "method": "Create",
+        "deviceId": "",
+        "password": "",
+        "ignore": false,
+        "x": 650.5,
+        "y": 230.5,
+        "wires": [
+            [
+                "bbb905cf.962cf8"
+            ]
+        ]
+    },
+    {
+        "id": "4d1aa7bd.d12af",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 493.5,
+        "y": 230.75,
+        "wires": [
+            [
+                "3ea8d9e8.0694ae"
+            ]
+        ]
+    },
+    {
+        "id": "bbb905cf.962cf8",
+        "type": "debug",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 668.5,
+        "y": 140.5,
+        "wires": []
+    },
+    {
+        "id": "bd0190fa.8f9a48",
+        "type": "inject",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 113,
+        "y": 323,
+        "wires": [
+            [
+                "4f6f896d.cd12a8"
+            ]
+        ]
+    },
+    {
+        "id": "898dd91f.d97ac",
+        "type": "repeat",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "repetitions": "50",
+        "elseOutput": false,
+        "outputs": 1,
+        "x": 298,
+        "y": 405.5,
+        "wires": [
+            [
+                "4f6f896d.cd12a8",
+                "9e42fd16.2047b8"
+            ]
+        ]
+    },
+    {
+        "id": "4f6f896d.cd12a8",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 291,
+        "y": 324.5,
+        "wires": [
+            [
+                "898dd91f.d97ac"
+            ]
+        ]
+    },
+    {
+        "id": "55c35540.b8d6ec",
+        "type": "device-manager",
+        "z": "5d6be325.275c84",
+        "auth": "bluemix",
+        "name": "",
+        "apiKey": "",
+        "deviceType": "devices",
+        "method": "Delete",
+        "deviceId": "",
+        "password": "",
+        "ignore": false,
+        "x": 647,
+        "y": 403.25,
+        "wires": [
+            [
+                "e84bafa5.48366"
+            ]
+        ]
+    },
+    {
+        "id": "9e42fd16.2047b8",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 403.5,
+        "wires": [
+            [
+                "55c35540.b8d6ec"
+            ]
+        ]
+    },
+    {
+        "id": "e84bafa5.48366",
+        "type": "debug",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 665,
+        "y": 313.25,
+        "wires": []
+    },
+    {
+        "id": "9f779bf2.a772b",
+        "type": "delay",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 278.5,
+        "y": 143.75,
+        "wires": [
+            [
+                "ed90892f.60fab",
+                "a98010d8.1a4288"
+            ]
+        ]
+    },
+    {
+        "id": "ed90892f.60fab",
+        "type": "function",
+        "z": "919793a5.33c3b",
+        "name": "Set message event",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar msgevt = context.get('msgevt')||0;\nmsgevt += 1;\n// store the value back\ncontext.set('msgevt',msgevt);\n// make it part of the outgoing msg object\nmsg.msgevt = msgevt;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 282.5,
+        "y": 45.75,
+        "wires": [
+            [
+                "9f779bf2.a772b"
+            ]
+        ]
+    },
+    {
+        "id": "6df3e3c6.f0cf64",
+        "type": "inject",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 88.5,
+        "y": 47.25,
+        "wires": [
+            [
+                "ed90892f.60fab"
+            ]
+        ]
+    },
+    {
+        "id": "4a9c690.71be598",
+        "type": "repeat",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "repetitions": "10",
+        "elseOutput": false,
+        "outputs": 1,
+        "x": 537,
+        "y": 41,
+        "wires": [
+            [
+                "a98010d8.1a4288",
+                "eca183d5.3deda8"
+            ]
+        ]
+    },
+    {
+        "id": "a98010d8.1a4288",
+        "type": "function",
+        "z": "919793a5.33c3b",
+        "name": "Loop for 5 devices",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar msgread = context.get('msgread')||0;\n\nmsgread += 1;\nif(msgread < 1 || msgread > 10){\n    msgread = 1\n}\nif(msgread === 11) {\n    msgread = 0;\n} \n\n// store the value back\ncontext.set('msgread',msgread);\n// make it part of the outgoing msg object\nmsg.msgread = msgread;\nreturn msg",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 536,
+        "y": 144,
+        "wires": [
+            [
+                "4a9c690.71be598"
+            ]
+        ]
+    },
+    {
+        "id": "eca183d5.3deda8",
+        "type": "function",
+        "z": "919793a5.33c3b",
+        "name": "override device id",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar msgCount = context.get('msgCount') || 0;\nmsgCount += 1;\n// store the value back\ncontext.set('msgCount', msgCount);\n\n\nmsg.payload = {\"d\":{\"temp\":msgCount}};\nmsg.deviceId = msg.msgread;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 760,
+        "y": 41,
+        "wires": [
+            [
+                "38805752.806e4"
+            ]
+        ]
+    },
+    {
+        "id": "38805752.806e4",
+        "type": "ibmiot out",
+        "z": "919793a5.33c3b",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "evt",
+        "deviceId": "uuu",
+        "deviceType": "devices",
+        "eventCommandType": "blink",
+        "format": "json",
+        "data": "{\"d\":{\"temp\":22}}",
+        "qos": 0,
+        "name": "IBM IoT",
+        "service": "registered",
+        "x": 763.5,
+        "y": 143.5,
+        "wires": []
+    },
+    {
+        "id": "c7720aeb.228e08",
+        "type": "function",
+        "z": "919793a5.33c3b",
+        "name": "Set message event",
+        "func": "var msgevt = 0 ;\nvar msgCount = 0;\nvar numberEvents = msg.payload.numberEvents;\nvar numberDevices = msg.payload.numberDevices;\nvar timeInterval = msg.payload.timeInterval;\n\nvar callbackFunc = function() {\n    msgevt += 1;\n\n    if(msgevt >= numberEvents) {\n        clearInterval(timerId);\n    }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msgCount += 1;\n        msg.payload = {\"d\":{\"temp\":msgCount}};\n        msg.deviceId = i;    \n        node.send(msg);\n    }\n}\nvar timerId = setInterval(callbackFunc, timeInterval);",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 278,
+        "y": 326,
+        "wires": [
+            [
+                "8c728ce1.07765",
+                "de57a32b.3a39c8"
+            ]
+        ]
+    },
+    {
+        "id": "1bf694c2.3d1673",
+        "type": "inject",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"numberDevices\":2, \"numberEvents\":3}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 77,
+        "y": 306,
+        "wires": [
+            [
+                "c7720aeb.228e08"
+            ]
+        ]
+    },
+    {
+        "id": "de57a32b.3a39c8",
+        "type": "debug",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 506.5,
+        "y": 382.25,
+        "wires": []
+    },
+    {
+        "id": "8c728ce1.07765",
+        "type": "ibmiot out",
+        "z": "919793a5.33c3b",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "evt",
+        "deviceId": "uuu",
+        "deviceType": "devices",
+        "eventCommandType": "blink",
+        "format": "json",
+        "data": "{\"d\":{\"temp\":22}}",
+        "qos": 0,
+        "name": "IBM IoT",
+        "service": "registered",
+        "x": 535,
+        "y": 327,
+        "wires": []
+    },
+    {
+        "id": "9fb4b9db.9dcc8",
+        "type": "http in",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "url": "/rest/runtest",
+        "method": "post",
+        "swaggerDoc": "",
+        "x": 236.5,
+        "y": 225.25,
+        "wires": [
+            [
+                "c7720aeb.228e08",
+                "fae2229c.7d43d"
+            ]
+        ]
+    },
+    {
+        "id": "1cfb3c43.0b7cdc",
+        "type": "http response",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "x": 590.5,
+        "y": 266.5,
+        "wires": []
+    },
+    {
+        "id": "fae2229c.7d43d",
+        "type": "function",
+        "z": "919793a5.33c3b",
+        "name": "",
+        "func": "msg.payload.timestamp = new Date().toUTCString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 439.5,
+        "y": 210.75,
+        "wires": [
+            [
+                "1cfb3c43.0b7cdc"
+            ]
+        ]
+    }
+]
