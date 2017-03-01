@@ -1,0 +1,12 @@
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: 1000-device-create
+  host: 1000-device-create
+  disk_quota: 1024M
+  services:
+  - 1000-device-create-cloudantNoSQLDB
+  - 1000-device-create-iotf-service
+  - availability-monitoring-auto
