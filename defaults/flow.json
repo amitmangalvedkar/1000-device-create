@@ -10,6 +10,91 @@
         "label": "Simulate multiple devices"
     },
     {
+        "id": "d5d9f37a.52fc8",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
         "id": "ec2ffc67.2ced98",
         "type": "inject",
         "z": "5d6be325.275c84",
@@ -20,8 +105,8 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 145.5,
-        "y": 84.25,
+        "x": 138.5,
+        "y": 24.25,
         "wires": [
             [
                 "64d9436a.bd828c"
@@ -51,8 +136,8 @@
         "password": "",
         "properties": [],
         "ignore": false,
-        "x": 306.5,
-        "y": 85.5,
+        "x": 299.5,
+        "y": 25.5,
         "wires": [
             [
                 "bee38e2.e178e7"
@@ -67,8 +152,8 @@
         "active": true,
         "console": "false",
         "complete": "false",
-        "x": 506.5,
-        "y": 86.5,
+        "x": 499.5,
+        "y": 26.5,
         "wires": []
     },
     {
@@ -82,8 +167,8 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 116.5,
-        "y": 150.25,
+        "x": 83.5,
+        "y": 216.25,
         "wires": [
             [
                 "a42b24d0.316f18"
@@ -95,11 +180,11 @@
         "type": "repeat",
         "z": "5d6be325.275c84",
         "name": "",
-        "repetitions": "50",
+        "repetitions": "500",
         "elseOutput": false,
         "outputs": 1,
-        "x": 301.5,
-        "y": 232.75,
+        "x": 194.5,
+        "y": 284.75,
         "wires": [
             [
                 "a42b24d0.316f18",
@@ -112,11 +197,11 @@
         "type": "function",
         "z": "5d6be325.275c84",
         "name": "",
-        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\nreturn msg;",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\n//msg.repetitions = 100;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 294.5,
-        "y": 151.75,
+        "x": 240.5,
+        "y": 215.75,
         "wires": [
             [
                 "ad82370f.32998"
@@ -135,8 +220,8 @@
         "deviceId": "",
         "password": "",
         "ignore": false,
-        "x": 650.5,
-        "y": 230.5,
+        "x": 660.5,
+        "y": 281.5,
         "wires": [
             [
                 "bbb905cf.962cf8"
@@ -151,8 +236,8 @@
         "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 493.5,
-        "y": 230.75,
+        "x": 386.5,
+        "y": 284.75,
         "wires": [
             [
                 "3ea8d9e8.0694ae"
@@ -167,8 +252,8 @@
         "active": true,
         "console": "false",
         "complete": "false",
-        "x": 668.5,
-        "y": 140.5,
+        "x": 669.5,
+        "y": 204.5,
         "wires": []
     },
     {
@@ -182,8 +267,8 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 113,
-        "y": 323,
+        "x": 115,
+        "y": 446,
         "wires": [
             [
                 "4f6f896d.cd12a8"
@@ -195,11 +280,11 @@
         "type": "repeat",
         "z": "5d6be325.275c84",
         "name": "",
-        "repetitions": "50",
+        "repetitions": "10",
         "elseOutput": false,
         "outputs": 1,
-        "x": 298,
-        "y": 405.5,
+        "x": 300,
+        "y": 528.5,
         "wires": [
             [
                 "4f6f896d.cd12a8",
@@ -212,11 +297,11 @@
         "type": "function",
         "z": "5d6be325.275c84",
         "name": "",
-        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\nreturn msg;",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\nmsg.repetitions = msg.payload;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 291,
-        "y": 324.5,
+        "y": 452.5,
         "wires": [
             [
                 "898dd91f.d97ac"
@@ -235,8 +320,8 @@
         "deviceId": "",
         "password": "",
         "ignore": false,
-        "x": 647,
-        "y": 403.25,
+        "x": 511,
+        "y": 458.25,
         "wires": [
             [
                 "e84bafa5.48366"
@@ -251,8 +336,8 @@
         "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 490,
-        "y": 403.5,
+        "x": 492,
+        "y": 526.5,
         "wires": [
             [
                 "55c35540.b8d6ec"
@@ -267,8 +352,8 @@
         "active": true,
         "console": "false",
         "complete": "false",
-        "x": 665,
-        "y": 313.25,
+        "x": 666,
+        "y": 519.25,
         "wires": []
     },
     {
@@ -504,6 +589,93 @@
         "wires": [
             [
                 "1cfb3c43.0b7cdc"
+            ]
+        ]
+    },
+    {
+        "id": "6f13a507.d83b04",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "Set message event",
+        "func": "var numberDevices = parseInt(msg.payload);\nvar deviceCount = 0;\nvar timerId = 1000;\nvar deviceCreateCallback = function() {\n    // deviceCount += 1;\n\n    // if(deviceCount >= numberDevices) {\n    //     clearInterval(timerId);\n    // }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msg.payload={};\n        msg.payload.deviceId = i;\n        node.send(msg);\n    }\n}\n\ndeviceCreateCallback();\n//var timerId = setInterval(deviceCreateCallback, timerId);",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 442,
+        "y": 227,
+        "wires": [
+            [
+                "3ea8d9e8.0694ae"
+            ]
+        ]
+    },
+    {
+        "id": "5e2cbb60.f7e46c",
+        "type": "inject",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "topic": "",
+        "payload": "500",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 250.5,
+        "y": 158.25,
+        "wires": [
+            [
+                "6f13a507.d83b04"
+            ]
+        ]
+    },
+    {
+        "id": "cf6d439f.cce53",
+        "type": "http in",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "url": "/rest/devices",
+        "method": "post",
+        "swaggerDoc": "",
+        "x": 244.5,
+        "y": 99.25,
+        "wires": [
+            [
+                "6f13a507.d83b04",
+                "372200d.c998f"
+            ]
+        ]
+    },
+    {
+        "id": "372200d.c998f",
+        "type": "http response",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "x": 597.5,
+        "y": 100.5,
+        "wires": []
+    },
+    {
+        "id": "5d902db8.c68764",
+        "type": "http response",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "x": 401.5,
+        "y": 394.5,
+        "wires": []
+    },
+    {
+        "id": "bb755946.ddfdd8",
+        "type": "http in",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "url": "/rest/deleteDevices",
+        "method": "post",
+        "swaggerDoc": "",
+        "x": 136.5,
+        "y": 391.25,
+        "wires": [
+            [
+                "4f6f896d.cd12a8",
+                "5d902db8.c68764"
             ]
         ]
     }
