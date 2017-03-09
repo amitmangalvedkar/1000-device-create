@@ -268,7 +268,7 @@
         "crontab": "",
         "once": false,
         "x": 115,
-        "y": 446,
+        "y": 431,
         "wires": [
             [
                 "4f6f896d.cd12a8"
@@ -284,7 +284,7 @@
         "elseOutput": false,
         "outputs": 1,
         "x": 300,
-        "y": 528.5,
+        "y": 513.5,
         "wires": [
             [
                 "4f6f896d.cd12a8",
@@ -301,7 +301,7 @@
         "outputs": 1,
         "noerr": 0,
         "x": 291,
-        "y": 452.5,
+        "y": 437.5,
         "wires": [
             [
                 "898dd91f.d97ac"
@@ -321,7 +321,7 @@
         "password": "",
         "ignore": false,
         "x": 511,
-        "y": 458.25,
+        "y": 443.25,
         "wires": [
             [
                 "e84bafa5.48366"
@@ -337,7 +337,7 @@
         "outputs": 1,
         "noerr": 0,
         "x": 492,
-        "y": 526.5,
+        "y": 511.5,
         "wires": [
             [
                 "55c35540.b8d6ec"
@@ -353,7 +353,7 @@
         "console": "false",
         "complete": "false",
         "x": 666,
-        "y": 519.25,
+        "y": 504.25,
         "wires": []
     },
     {
@@ -488,7 +488,7 @@
         "type": "function",
         "z": "919793a5.33c3b",
         "name": "Set message event",
-        "func": "var msgevt = 0 ;\nvar msgCount = 0;\nvar numberEvents = msg.payload.numberEvents;\nvar numberDevices = msg.payload.numberDevices;\nvar timeInterval = msg.payload.timeInterval;\n\nvar callbackFunc = function() {\n    msgevt += 1;\n\n    if(msgevt >= numberEvents) {\n        clearInterval(timerId);\n    }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msgCount += 1;\n        msg.payload = {\"d\":{\"temp\":msgCount}};\n        msg.deviceId = i;    \n        node.send(msg);\n    }\n}\nvar timerId = setInterval(callbackFunc, timeInterval);",
+        "func": "var msgevt = 0 ;\nvar msgCount = 0;\nvar numberEvents = msg.payload.numberEvents;\nvar numberDevices = msg.payload.numberDevices;\nvar timeInterval = msg.payload.timeInterval;\n\nvar callbackFunc = function() {\n    msgevt += 1;\n\n    if(msgevt >= numberEvents) {\n        clearInterval(timerId);\n    }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msgCount += 1;\n        msg.payload = {\"d\":{\"temp\":msgCount}};\n        msg.deviceId = i;   \n        msg.qos = msg.payload.qos || 0;\n        node.send(msg);\n    }\n}\nvar timerId = setInterval(callbackFunc, timeInterval);",
         "outputs": 1,
         "noerr": 0,
         "x": 278,
@@ -543,7 +543,7 @@
         "eventCommandType": "blink",
         "format": "json",
         "data": "{\"d\":{\"temp\":22}}",
-        "qos": 0,
+        "qos": "",
         "name": "IBM IoT",
         "service": "registered",
         "x": 535,
@@ -597,7 +597,7 @@
         "type": "function",
         "z": "5d6be325.275c84",
         "name": "Set message event",
-        "func": "var numberDevices = parseInt(msg.payload);\nvar deviceCount = 0;\nvar timerId = 1000;\nvar deviceCreateCallback = function() {\n    // deviceCount += 1;\n\n    // if(deviceCount >= numberDevices) {\n    //     clearInterval(timerId);\n    // }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msg.payload={};\n        msg.payload.deviceId = i;\n        node.send(msg);\n    }\n}\n\ndeviceCreateCallback();\n//var timerId = setInterval(deviceCreateCallback, timerId);",
+        "func": "var numberDevices = parseInt(msg.payload);\nvar deviceCount = 0;\nvar chunkSize = 500;\n\nvar chunks = numberDevices / chunkSize;\nvar deviceCreateCallback = function() {\n    var devicePointer = 0;\n    for (var cycle = 0 ; cycle <= chunks ; cycle++) {\n        msg.payload=[];\n        \n        for (var i = 0 ; devicePointer < numberDevices && i < chunkSize ; i++) {\n            var singleDevice = {};\n            devicePointer++;\n            singleDevice.deviceId = devicePointer;\n            singleDevice.typeId = \"devices\";\n            msg.payload.push(singleDevice);\n        }\n        if(msg.payload.length !== 0)\n            node.send(msg);\n    }\n}\n\ndeviceCreateCallback();\n//var timerId = setInterval(deviceCreateCallback, timerId);",
         "outputs": 1,
         "noerr": 0,
         "x": 442,
@@ -605,25 +605,6 @@
         "wires": [
             [
                 "3ea8d9e8.0694ae"
-            ]
-        ]
-    },
-    {
-        "id": "5e2cbb60.f7e46c",
-        "type": "inject",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "topic": "",
-        "payload": "500",
-        "payloadType": "num",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "x": 250.5,
-        "y": 158.25,
-        "wires": [
-            [
-                "6f13a507.d83b04"
             ]
         ]
     },
@@ -636,7 +617,7 @@
         "method": "post",
         "swaggerDoc": "",
         "x": 244.5,
-        "y": 99.25,
+        "y": 135.25,
         "wires": [
             [
                 "6f13a507.d83b04",
@@ -649,8 +630,8 @@
         "type": "http response",
         "z": "5d6be325.275c84",
         "name": "",
-        "x": 597.5,
-        "y": 100.5,
+        "x": 581.5,
+        "y": 135.5,
         "wires": []
     },
     {
@@ -659,7 +640,7 @@
         "z": "5d6be325.275c84",
         "name": "",
         "x": 401.5,
-        "y": 394.5,
+        "y": 379.5,
         "wires": []
     },
     {
@@ -671,7 +652,7 @@
         "method": "post",
         "swaggerDoc": "",
         "x": 136.5,
-        "y": 391.25,
+        "y": 376.25,
         "wires": [
             [
                 "4f6f896d.cd12a8",
