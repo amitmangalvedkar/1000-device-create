@@ -98,113 +98,18 @@
         "id": "ec2ffc67.2ced98",
         "type": "inject",
         "z": "5d6be325.275c84",
-        "name": "",
+        "name": "Test deviceType creation",
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
+        "payload": "{\"deviceType\":\"device003\"}",
+        "payloadType": "str",
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 138.5,
-        "y": 24.25,
+        "x": 402.5,
+        "y": 64.25,
         "wires": [
             [
-                "64d9436a.bd828c"
-            ]
-        ]
-    },
-    {
-        "id": "64d9436a.bd828c",
-        "type": "device-type-manager",
-        "z": "5d6be325.275c84",
-        "auth": "bluemix",
-        "name": "",
-        "apiKey": "",
-        "deviceType": "",
-        "classId": "Device",
-        "method": "Create",
-        "deviceTypeId": "devices",
-        "serialNumber": "",
-        "manufacturer": "",
-        "model": "",
-        "deviceClass": "",
-        "infoDescription": "",
-        "firmwareVersion": "",
-        "hardwareVersion": "",
-        "descriptiveLocation": "",
-        "metadata": "",
-        "password": "",
-        "properties": [],
-        "ignore": false,
-        "x": 299.5,
-        "y": 25.5,
-        "wires": [
-            [
-                "bee38e2.e178e7"
-            ]
-        ]
-    },
-    {
-        "id": "bee38e2.e178e7",
-        "type": "debug",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "active": true,
-        "console": "false",
-        "complete": "false",
-        "x": 499.5,
-        "y": 26.5,
-        "wires": []
-    },
-    {
-        "id": "78572382.87a24c",
-        "type": "inject",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "topic": "",
-        "payload": "1",
-        "payloadType": "num",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "x": 83.5,
-        "y": 216.25,
-        "wires": [
-            [
-                "a42b24d0.316f18"
-            ]
-        ]
-    },
-    {
-        "id": "ad82370f.32998",
-        "type": "repeat",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "repetitions": "500",
-        "elseOutput": false,
-        "outputs": 1,
-        "x": 194.5,
-        "y": 284.75,
-        "wires": [
-            [
-                "a42b24d0.316f18",
-                "4d1aa7bd.d12af"
-            ]
-        ]
-    },
-    {
-        "id": "a42b24d0.316f18",
-        "type": "function",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\n\n//msg.repetitions = 100;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 240.5,
-        "y": 215.75,
-        "wires": [
-            [
-                "ad82370f.32998"
+                "8c297700.23869"
             ]
         ]
     },
@@ -220,27 +125,11 @@
         "deviceId": "",
         "password": "",
         "ignore": false,
-        "x": 660.5,
-        "y": 281.5,
+        "x": 635.5,
+        "y": 207.5,
         "wires": [
             [
                 "bbb905cf.962cf8"
-            ]
-        ]
-    },
-    {
-        "id": "4d1aa7bd.d12af",
-        "type": "function",
-        "z": "5d6be325.275c84",
-        "name": "",
-        "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 386.5,
-        "y": 284.75,
-        "wires": [
-            [
-                "3ea8d9e8.0694ae"
             ]
         ]
     },
@@ -252,8 +141,8 @@
         "active": true,
         "console": "false",
         "complete": "false",
-        "x": 669.5,
-        "y": 204.5,
+        "x": 650.5,
+        "y": 295.5,
         "wires": []
     },
     {
@@ -267,8 +156,8 @@
         "repeat": "",
         "crontab": "",
         "once": false,
-        "x": 115,
-        "y": 431,
+        "x": 110,
+        "y": 425,
         "wires": [
             [
                 "4f6f896d.cd12a8"
@@ -283,8 +172,8 @@
         "repetitions": "10",
         "elseOutput": false,
         "outputs": 1,
-        "x": 300,
-        "y": 513.5,
+        "x": 295,
+        "y": 507.5,
         "wires": [
             [
                 "4f6f896d.cd12a8",
@@ -300,8 +189,8 @@
         "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\nmsg.repetitions = msg.payload;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 291,
-        "y": 437.5,
+        "x": 286,
+        "y": 431.5,
         "wires": [
             [
                 "898dd91f.d97ac"
@@ -320,8 +209,8 @@
         "deviceId": "",
         "password": "",
         "ignore": false,
-        "x": 511,
-        "y": 443.25,
+        "x": 506,
+        "y": 437.25,
         "wires": [
             [
                 "e84bafa5.48366"
@@ -336,8 +225,8 @@
         "func": "msg.payload = {};\nmsg.payload.deviceId = msg.deviceCount;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 492,
-        "y": 511.5,
+        "x": 487,
+        "y": 505.5,
         "wires": [
             [
                 "55c35540.b8d6ec"
@@ -352,8 +241,8 @@
         "active": true,
         "console": "false",
         "complete": "false",
-        "x": 666,
-        "y": 504.25,
+        "x": 661,
+        "y": 498.25,
         "wires": []
     },
     {
@@ -597,11 +486,11 @@
         "type": "function",
         "z": "5d6be325.275c84",
         "name": "Set message event",
-        "func": "var numberDevices = parseInt(msg.payload);\nvar deviceCount = 0;\nvar chunkSize = 500;\n\nvar chunks = numberDevices / chunkSize;\nvar deviceCreateCallback = function() {\n    var devicePointer = 0;\n    for (var cycle = 0 ; cycle <= chunks ; cycle++) {\n        msg.payload=[];\n        \n        for (var i = 0 ; devicePointer < numberDevices && i < chunkSize ; i++) {\n            var singleDevice = {};\n            devicePointer++;\n            singleDevice.deviceId = devicePointer;\n            singleDevice.typeId = \"devices\";\n            msg.payload.push(singleDevice);\n        }\n        if(msg.payload.length !== 0)\n            node.send(msg);\n    }\n}\n\ndeviceCreateCallback();\n//var timerId = setInterval(deviceCreateCallback, timerId);",
+        "func": "var numberDevices = parseInt(msg.payload.numberDevices);\nvar deviceCount = 0;\nvar chunkSize = parseInt(msg.payload.chunkSize) || 500;\n\nchunkSize > 2000 ? 2000 : chunkSize;\nchunkSize > numberDevices ? numberDevices : chunkSize;\n\nvar typeId = msg.payload.typeId || \"devices\";\nvar password = msg.payload.authToken\n\nvar chunks = numberDevices / chunkSize;\nvar deviceCreateCallback = function() {\n    var devicePointer = 0;\n    for (var cycle = 0 ; cycle <= chunks ; cycle++) {\n        msg.payload=[];\n        \n        for (var i = 0 ; devicePointer < numberDevices && i < chunkSize ; i++) {\n            var singleDevice = {};\n            devicePointer++;\n            singleDevice.deviceId = devicePointer;\n            singleDevice.typeId = typeId;\n            if(password) {\n                singleDevice.authToken = password;                \n            }\n\n            msg.payload.push(singleDevice);\n        }\n        if(msg.payload.length !== 0)\n            node.send(msg);\n    }\n}\n\ndeviceCreateCallback();\n//var timerId = setInterval(deviceCreateCallback, timerId);",
         "outputs": 1,
         "noerr": 0,
-        "x": 442,
-        "y": 227,
+        "x": 432,
+        "y": 206,
         "wires": [
             [
                 "3ea8d9e8.0694ae"
@@ -616,12 +505,13 @@
         "url": "/rest/devices",
         "method": "post",
         "swaggerDoc": "",
-        "x": 244.5,
-        "y": 135.25,
+        "x": 102.5,
+        "y": 119.25,
         "wires": [
             [
-                "6f13a507.d83b04",
-                "372200d.c998f"
+                "372200d.c998f",
+                "630a79aa.df3328",
+                "98daf331.e3c88"
             ]
         ]
     },
@@ -630,8 +520,8 @@
         "type": "http response",
         "z": "5d6be325.275c84",
         "name": "",
-        "x": 581.5,
-        "y": 135.5,
+        "x": 174.5,
+        "y": 58.5,
         "wires": []
     },
     {
@@ -639,8 +529,8 @@
         "type": "http response",
         "z": "5d6be325.275c84",
         "name": "",
-        "x": 401.5,
-        "y": 379.5,
+        "x": 396.5,
+        "y": 373.5,
         "wires": []
     },
     {
@@ -651,12 +541,94 @@
         "url": "/rest/deleteDevices",
         "method": "post",
         "swaggerDoc": "",
-        "x": 136.5,
-        "y": 376.25,
+        "x": 131.5,
+        "y": 370.25,
         "wires": [
             [
                 "4f6f896d.cd12a8",
                 "5d902db8.c68764"
+            ]
+        ]
+    },
+    {
+        "id": "8c297700.23869",
+        "type": "device-type-manager",
+        "z": "5d6be325.275c84",
+        "auth": "bluemix",
+        "name": "",
+        "apiKey": "",
+        "deviceType": "",
+        "classId": "Device",
+        "method": "Create",
+        "deviceTypeId": "",
+        "serialNumber": "",
+        "manufacturer": "",
+        "model": "",
+        "deviceClass": "",
+        "infoDescription": "",
+        "firmwareVersion": "",
+        "hardwareVersion": "",
+        "descriptiveLocation": "",
+        "metadata": "",
+        "password": "",
+        "properties": [],
+        "ignore": true,
+        "x": 591,
+        "y": 138,
+        "wires": [
+            [
+                "e67b7371.81027"
+            ]
+        ]
+    },
+    {
+        "id": "e67b7371.81027",
+        "type": "debug",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 658,
+        "y": 69,
+        "wires": []
+    },
+    {
+        "id": "630a79aa.df3328",
+        "type": "function",
+        "z": "5d6be325.275c84",
+        "name": "Override deviceType",
+        "func": "msg.payload.deviceType = msg.payload.typeId\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 336.5,
+        "y": 117.75,
+        "wires": [
+            [
+                "8c297700.23869"
+            ]
+        ]
+    },
+    {
+        "id": "98daf331.e3c88",
+        "type": "delay",
+        "z": "5d6be325.275c84",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 242.5,
+        "y": 205.75,
+        "wires": [
+            [
+                "6f13a507.d83b04"
             ]
         ]
     }
