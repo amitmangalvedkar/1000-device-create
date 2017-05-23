@@ -10,91 +10,6 @@
         "label": "Simulate multiple devices"
     },
     {
-        "id": "d5d9f37a.52fc8",
-        "type": "ui_base",
-        "theme": {
-            "name": "theme-light",
-            "lightTheme": {
-                "default": "#0094CE",
-                "baseColor": "#0094CE",
-                "baseFont": "Helvetica Neue",
-                "edited": true,
-                "reset": false
-            },
-            "darkTheme": {
-                "default": "#097479",
-                "baseColor": "#097479",
-                "baseFont": "Helvetica Neue",
-                "edited": false
-            },
-            "customTheme": {
-                "name": "Untitled Theme 1",
-                "default": "#4B7930",
-                "baseColor": "#4B7930",
-                "baseFont": "Helvetica Neue"
-            },
-            "themeState": {
-                "base-color": {
-                    "default": "#0094CE",
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-titlebar-backgroundColor": {
-                    "value": "#0094CE",
-                    "edited": false
-                },
-                "page-backgroundColor": {
-                    "value": "#fafafa",
-                    "edited": false
-                },
-                "page-sidebar-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-textColor": {
-                    "value": "#000000",
-                    "edited": false
-                },
-                "group-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "group-backgroundColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                },
-                "widget-textColor": {
-                    "value": "#111111",
-                    "edited": false
-                },
-                "widget-backgroundColor": {
-                    "value": "#0094ce",
-                    "edited": false
-                },
-                "widget-borderColor": {
-                    "value": "#ffffff",
-                    "edited": false
-                }
-            }
-        },
-        "site": {
-            "name": "Node-RED Dashboard",
-            "hideToolbar": "false",
-            "allowSwipe": "false",
-            "dateFormat": "DD/MM/YYYY",
-            "sizes": {
-                "sx": 48,
-                "sy": 48,
-                "gx": 6,
-                "gy": 6,
-                "cx": 6,
-                "cy": 6,
-                "px": 0,
-                "py": 0
-            }
-        }
-    },
-    {
         "id": "ec2ffc67.2ced98",
         "type": "inject",
         "z": "5d6be325.275c84",
@@ -168,7 +83,7 @@
         "id": "898dd91f.d97ac",
         "type": "repeat",
         "z": "5d6be325.275c84",
-        "name": "",
+        "name": "repeat n times",
         "repetitions": "10",
         "elseOutput": false,
         "outputs": 1,
@@ -186,7 +101,7 @@
         "type": "function",
         "z": "5d6be325.275c84",
         "name": "",
-        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\nmsg.repetitions = msg.payload;\nreturn msg;",
+        "func": "// initialise the counter to 0 if it doesn't exist already\nvar deviceCount = context.get('deviceCount')||0;\ndeviceCount += 1;\n// store the value back\ncontext.set('deviceCount', deviceCount);\n// make it part of the outgoing msg object\nmsg.deviceCount = deviceCount;\nmsg.repetitions = msg.payload.numberDevices;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 286,
@@ -204,7 +119,7 @@
         "auth": "bluemix",
         "name": "",
         "apiKey": "",
-        "deviceType": "devices",
+        "deviceType": "",
         "method": "Delete",
         "deviceId": "",
         "password": "",
