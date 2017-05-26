@@ -1,6 +1,6 @@
 {
   "_id": "lesson4-simulate/flow",
-  "_rev": "43-5bfdba1f265350c3b59cb82cc4271d14",
+  "_rev": "53-93f6d48f1c9857093a6336a3ef98d090",
   "flow": [
     {
       "id": "5d6be325.275c84",
@@ -295,7 +295,7 @@
       "type": "function",
       "z": "919793a5.33c3b",
       "name": "Set message event",
-      "func": "var msgevt = 0 ;\nvar msgCount = 0;\nvar numberEvents = msg.payload.numberEvents;\nvar numberDevices = msg.payload.numberDevices;\nvar timeInterval = msg.payload.timeInterval;\nvar deviceType = msg.payload.deviceType;\nvar deviceName = msg.payload.deviceName;\n\nvar rpmLow = 1.0;\nvar rpmHigh = 3.0;\n\nvar rpmArray = [];\n\nfor (var j = 0 ; j < numberDevices ; j++) {\n    rpmArray[j] = parseFloat(((Math.random() * (rpmHigh - rpmLow + 1.0) + rpmLow)).toFixed(1));\n}\n\nvar callbackFunc = function() {\n    msgevt += 1;\n\n    if(msgevt >= numberEvents) {\n        clearInterval(timerId);\n    }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msgCount += 1;\n        msg.payload = {};\n        msg.payload.d = {};\n\n        msg.payload.d.id = deviceName + i;\n        msg.payload.d.ts = new Date().getTime();\n        msg.payload.d.ay = 0.0;\n        msg.payload.d.running = true;\n        msg.payload.d.rpm = rpmArray[i-1];\n\n        direction = msg.payload.d.ts % 2 == 0 ? -0.1 : 0.1; \n        rpmArray[i-1] = parseFloat(rpmArray[i-1] + direction).toFixed(1);\n        msg.payload.d.msgCount = msgCount;\n//        msg.qos = msg.payload.qos || 0;\n        msg.deviceId = deviceName + i;\n        msg.deviceType = deviceType;\n        node.send(msg);\n    }\n}\nvar timerId = setInterval(callbackFunc, timeInterval);",
+      "func": "var msgevt = 0 ;\nvar msgCount = 0;\nvar numberEvents = msg.payload.numberEvents;\nvar numberDevices = msg.payload.numberDevices;\nvar timeInterval = msg.payload.timeInterval;\nvar deviceType = msg.payload.deviceType;\nvar deviceName = msg.payload.deviceName;\n\nvar rpmLow = 1.0;\nvar rpmHigh = 3.0;\n\nvar ayLow = -1.0;\nvar ayHigh = 1.0;\n\nvar rpmArray = [];\nvar ayArray = [];\n\nfor (var j = 0 ; j < numberDevices ; j++) {\n    rpmArray[j] = parseFloat(((Math.random() * (rpmHigh - rpmLow /* + 1.0 */) + rpmLow)).toFixed(1));\n    ayArray[j] = parseFloat(((Math.random() * (ayHigh - ayLow) /* + 1.0 */)).toFixed(3));\n}\n\nvar callbackFunc = function() {\n    msgevt += 1;\n\n    if(msgevt >= numberEvents) {\n        clearInterval(timerId);\n    }\n    for (var i = 1 ; i <= numberDevices ; i++) {\n        msgCount += 1;\n        msg.payload = {};\n        msg.payload.d = {};\n\n        msg.payload.d.id = deviceName + i;\n        msg.payload.d.ts = new Date().getTime();\n        msg.payload.d.ay = ayArray[i-1];\n        msg.payload.d.running = true;\n        msg.payload.d.rpm = rpmArray[i-1];\n\n        direction = msg.payload.d.ts % 2 === 0 ? -0.1 : 0.1; \n        rpmArray[i-1] = parseFloat((rpmArray[i-1] + direction).toFixed(1));\n        direction = msg.payload.d.ts % 2 === 0 ? -0.05 : 0.05;\n        ayArray[i-1] = parseFloat((ayArray[i-1] + direction).toFixed(3));\n        \n        msg.payload.d.msgCount = msgCount;\n//        msg.qos = msg.payload.qos || 0;\n        msg.deviceId = deviceName + i;\n        msg.deviceType = deviceType;\n        node.send(msg);\n    }\n}\nvar timerId = setInterval(callbackFunc, timeInterval);",
       "outputs": 1,
       "noerr": 0,
       "x": 278,
@@ -303,7 +303,7 @@
       "wires": [
         [
           "8c728ce1.07765",
-          "de57a32b.3a39c8"
+          "845cde58.a1975"
         ]
       ]
     },
@@ -327,18 +327,6 @@
       ]
     },
     {
-      "id": "de57a32b.3a39c8",
-      "type": "debug",
-      "z": "919793a5.33c3b",
-      "name": "",
-      "active": true,
-      "console": "false",
-      "complete": "true",
-      "x": 506.5,
-      "y": 382.25,
-      "wires": []
-    },
-    {
       "id": "8c728ce1.07765",
       "type": "ibmiot out",
       "z": "919793a5.33c3b",
@@ -347,7 +335,7 @@
       "outputType": "evt",
       "deviceId": "uuu",
       "deviceType": "motorController",
-      "eventCommandType": "blink",
+      "eventCommandType": "status",
       "format": "json",
       "data": "{\"d\":{\"temp\":22}}",
       "qos": "",
@@ -549,6 +537,18 @@
           "6f13a507.d83b04"
         ]
       ]
+    },
+    {
+      "id": "845cde58.a1975",
+      "type": "debug",
+      "z": "919793a5.33c3b",
+      "name": "",
+      "active": true,
+      "console": "false",
+      "complete": "true",
+      "x": 518.5,
+      "y": 406.5,
+      "wires": []
     }
   ]
 }
